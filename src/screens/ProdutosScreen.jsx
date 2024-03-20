@@ -23,15 +23,9 @@ export default function ProdutosScreen() {
       // assim que temos a tela Produtos vamos buscar os
       // produtos chamando a função fetchProducts
       fetchProducts();
-      fetchCategories();
     },
-    [] // o array vazio indica que a função será executada apenas uma vez, quando o componente for montado
+    [categoria] // o array vazio indica que a função será executada apenas uma vez, quando o componente for montado
   );
-
-  useEffect(() => {
-    fetchProducts();
-  }, [categoria]);
-
 
   // aqui fizemos uma anon function dentro de um constante
   // ela é assíncrona pois fetch retorna uma promessa
@@ -60,11 +54,25 @@ export default function ProdutosScreen() {
       <Text variant="titleLarge">Produtos</Text>
       <Text variant="bodyMedium">Confira a lista de produtos</Text>
       <ScrollView>
-        {categorias.map((cat) => (
-          <Button key={cat} onPress={() => setCategoria(cat)}>
-            {cat}
-          </Button>
-        ))}
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-around",
+            flexWrap: "wrap",
+          }}
+        >
+          {categorias.map((cat) => (
+            <Button key={cat}
+              onPress={() => setCategoria(cat)}
+              mode="contained"
+            >
+              {cat}
+            </Button>
+          ))}
+          <Button onPress={() => setCategoria("")}> Limpar Filtros </Button>
+        </View>
+
+
 
         {
           // aqui criamos uma condicional dentro da exibição do componente
