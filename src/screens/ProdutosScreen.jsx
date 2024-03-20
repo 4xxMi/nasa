@@ -23,8 +23,9 @@ export default function ProdutosScreen() {
       // assim que temos a tela Produtos vamos buscar os
       // produtos chamando a função fetchProducts
       fetchProducts();
+      fetchCategories();
     },
-    [categoria] // o array vazio indica que a função será executada apenas uma vez, quando o componente for montado
+    [] // o array vazio indica que a função será executada apenas uma vez, quando o componente for montado
   );
 
   // aqui fizemos uma anon function dentro de um constante
