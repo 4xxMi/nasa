@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Card, Text } from "react-native-paper";
+import { Text } from "react-native-paper";
 import { View } from "react-native";
-import axios from "axios";
 import styles from "../config/style";
+import { Image } from "expo-image";
+
 
 // useEffect (function a (parametro_a){}); //rodando incessantemente
 // useEffect ((parametro_a)=>{});
@@ -11,42 +12,55 @@ import styles from "../config/style";
 // useEffect(function b(parametro_b){},  [temperatura]) // roda quando a variavel mudar
 
 const API_KEY = "19192600f70b22d9a5fcb409dbfb3741";
-const CITY_NAME = "Joinville";
+const URL = `https://api.openweathermap.org/data/2.5/weather?q=Joinville&appid=${API_KEY}&units=metric`
 
 export default function tempoScreenAula() {
-    const [tempoData, setTempoData] = useState(null);
+    const [temperatura, setTemperatura] = useState("");
+    const [icone, SetIcone] = useState("");
+    const [cidade, setCidade] = useState ("");
+
+    const fetchTempo = async () => {
+        //vou ali buscar o json na net
+        const resposta = await fetch(URL);
+        //recebe a info e converte em programação tipo json
+        const data = await resposta.json();
+
+        console.log(resposta); // formtato tecto
+        console.log(data); // convertido pro json 
+        setTemperatura(data.main);
+        SetIcone(data.weather[0].icon);
+    };
 
     useEffect(() => {
-        const fetchTempo = async () => {
-            const url = `https://api.openweathermap.org/data/2.5/weather?q=${CITY_NAME}&appid=${API_KEY}&units=metric`
-
-            try {
-                const response = await axios.get(url);
-                console.log(response.data);
-
-                setTempoData(response.data)// aqui a chave pro sucesso
-            } catch (error) {
-                console.error("erro", error);
-            }
-        };
         fetchTempo();
-
-    }, []);
+    }, []); //fehou a chave do useeffect e passou um array [] vazio
+    // array vazio = só vai ser executado uma vez (quando for montado
 
     return (
+
         <View style={styles.container}>
-            <Text
-                variant="bodyLarge">
-                Tempo em {CITY_NAME}
-            </Text>
-            {tempoData && (
-                <Card style={styles.card}>
-                    <Card.Title title="Detalhes do tempo" />
-                    <Card.Content>
-                        <Text> Temperatura atual: {tempoData.main.temp} °C </Text>
-                    </Card.Content>
-                </Card>
+            {icone && (
+                <>
+                <Text 
+                variant="displayMedium"
+                style={{ textAlign: "center", marginVertical: 10 }}
+                > 
+                Temperatura em joinvas 
+                </Text>
+            
+            
+                <Image
+                source = {{
+                    uri: `https://openweathermap.org/img/wn/${icone}@2x.png`,
+                }}
+                style = {{width: 100, height: 100, backgroundColor: "white", borderRadius: 200,}}
+                /></>
             )}
+
+            <Text variant="bodyLarge"> infors </Text>
+            <Text> Temperatura atual: {temperatura?.temp} </Text>
+            <Text> Temperatura Máxima: {temperatura?.temp_max} </Text>
+            <Text> Temperatura Mínima: {temperatura?.temp_min} </Text>
         </View>
     );
 }

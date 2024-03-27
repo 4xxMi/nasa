@@ -11,6 +11,7 @@ const Tab = createMaterialBottomTabNavigator();
 
 export default function AppNavigator() {
   return (
+    
     <Stack.Navigator>
       <Stack.Screen
         name="TabNavigator" // funciona como uma ID da tela, vamos usa-la para chamar esta tela depois
@@ -18,11 +19,13 @@ export default function AppNavigator() {
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
+    
   );
 }
 
 function TabNavigator() {
   return (
+
     <Tab.Navigator>
       <Tab.Screen
         name="HomeScreen" // id da tela
